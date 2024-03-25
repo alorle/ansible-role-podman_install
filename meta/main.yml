@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  role_name: podman_install
+  namespace: alorle
+  author: Álvaro Orduna León
+  description: Ansible Role for Podman Installation on Debian distributions
+  license: license MIT
+  min_ansible_version: "2.1"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - system
+    - podman
+    - debian
+    - ubuntu

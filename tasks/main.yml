@@ -1,0 +1,43 @@
+---
+- name: Ensure os family is Debian.
+  ansible.builtin.assert:
+    that: "ansible_os_family =='Debian'"
+
+- name: Define repository base path.
+  block:
+    - name: Define Ubuntu repository base path.
+      ansible.builtin.set_fact:
+        repository_base_path: "xUbunut_{{ ansible_facts.distribution_version }}"
+      when: ansible_facts.distribution == "Ubuntu"
+    - name: Define Debian repository base path.
+      ansible.builtin.set_fact:
+        repository_base_path: "Debian_{{ ansible_facts.distribution_major_version }}"
+      when: ansible_facts.distribution != "Ubuntu"
+
+- name: Ensure apt key is installed.
+  ansible.builtin.apt_key:
+    id: "{{ podman_apt_key.id | default(omit) }}"
+    url: "{{ podman_apt_key.url }}"
+    keyring: "{{ podman_apt_key.keyring }}"
+    state: "{{ podman_apt_key.state | default('present') }}"
+
+- name: Ensure apt repository file is present.
+  ansible.builtin.apt_repository:
+    filename: "{{ podman_apt_repository.filename }}"
+    repo: "{{ podman_apt_repository.repo }}"
+    mode: "{{ podman_apt_repository.mode | default('0644') }}"
+    state: "{{ podman_apt_repository.state | default('present') }}"
+
+- name: Ensure apt packages are installed.
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ podman_install_packages }}"
+  notify: Restart podman
+
+- name: Ensure podman is started and enabled at boot.
+  ansible.builtin.service:
+    name: podman
+    state: "{{ podman_service_state }}"
+    enabled: "{{ podman_service_enabled }}"
+  ignore_errors: "{{ ansible_check_mode }}"
