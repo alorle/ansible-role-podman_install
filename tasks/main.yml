@@ -14,6 +14,12 @@
         repository_base_path: "Debian_{{ ansible_facts.distribution_major_version }}"
       when: ansible_facts.distribution != "Ubuntu"
 
+- name: Ensure dependencies are installed.
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ required_packages }}"
+
 - name: Ensure apt key is installed.
   ansible.builtin.apt_key:
     id: "{{ podman_apt_key.id | default(omit) }}"
