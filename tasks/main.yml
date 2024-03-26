@@ -7,7 +7,7 @@
   block:
     - name: Define Ubuntu repository base path.
       ansible.builtin.set_fact:
-        repository_base_path: "xUbunut_{{ ansible_facts.distribution_version }}"
+        repository_base_path: "xUbuntu_{{ ansible_facts.distribution_version }}"
       when: ansible_facts.distribution == "Ubuntu"
     - name: Define Debian repository base path.
       ansible.builtin.set_fact:
