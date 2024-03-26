@@ -1,0 +1,25 @@
+---
+- name: Fail if molecule group is missing
+  hosts: localhost
+  tasks:
+    - name: Assert group existence
+      ansible.builtin.assert:
+        that: "'molecule' in groups"
+        fail_msg: |
+          molecule group was not found inside inventory groups: {{ groups }}
+
+- name: Converge
+  hosts: molecule
+
+  vars:
+    podman_install_packages:
+      - podman
+      - podman-netavark
+
+  pre_tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+  roles:
+    - alorle.podman_install

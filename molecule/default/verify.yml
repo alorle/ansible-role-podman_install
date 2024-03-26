@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: molecule
+
+  pre_tasks:
+    - name: Register podman package status.
+      ansible.builtin.package:
+        name: podman
+        state: present
+      check_mode: true
+      register: package_status
+
+    - name: Register podman service enabled status.
+      ansible.builtin.file:
+        path: /etc/systemd/system/default.target.wants/podman.service
+        state: file
+      check_mode: true
+      register: service_enabled_status
+
+  tasks:
+    - name: Test podman package is installed.
+      ansible.builtin.assert:
+        that: not package_status.changed
+    - name: Test podman service is enabled.
+      ansible.builtin.assert:
+        that: not service_enabled_status.changed
