@@ -40,6 +40,7 @@
     state: present
   loop: "{{ podman_install_packages }}"
   notify: Restart podman
+  register: result
 
 - name: Ensure podman is started and enabled at boot.
   ansible.builtin.service:
@@ -47,3 +48,4 @@
     state: "{{ podman_service_state }}"
     enabled: "{{ podman_service_enabled }}"
   ignore_errors: "{{ ansible_check_mode }}"
+  when: (result.results | selectattr("changed", "equalto", true) | length) > 0
