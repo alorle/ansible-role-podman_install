@@ -3,9 +3,14 @@ required_packages:
   - gnupg
 
 podman_apt_key:
-  keyring: /etc/apt/trusted.gpg.d/home_alvistack.gpg
-  url: http://downloadcontent.opensuse.org/repositories/home:/alvistack/{{ repository_base_path }}/Release.key
+  keyring: /etc/apt/trusted.gpg.d/devel-kubic-libcontainers-testing.gpg
+  url: >-
+    http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable/{{
+      repository_base_path
+    }}/Release.key
 
 podman_apt_repository:
-  filename: home:alvistack
-  repo: deb http://downloadcontent.opensuse.org/repositories/home:/alvistack/{{ repository_base_path }}/ /
+  filename: devel-kubic-libcontainers-testing
+  repo: >-
+    deb [signed-by={{ podman_apt_key.keyring }}]
+    http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable/{{ repository_base_path }}/ /

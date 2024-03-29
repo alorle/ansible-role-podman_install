@@ -11,15 +11,5 @@
 - name: Converge
   hosts: molecule
 
-  vars:
-    podman_install_packages:
-      - podman
-      - podman-netavark
-
-  pre_tasks:
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: true
-
   roles:
     - alorle.podman_install

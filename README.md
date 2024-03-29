@@ -1,6 +1,6 @@
 # Podman Install
 
-Ansible role to install podman on Debian based distros using [home:alvistack](https://build.opensuse.org/project/show/home:alvistack) repository.
+Ansible role to install podman on Debian 12 and Ubuntu 22.04 using [devel:kubic:libcontainers/unstable](https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable) repository.
 
 ## Requirements
 
@@ -13,8 +13,6 @@ Available variables are listed below, along with default values (see [defaults/m
 | Variable                  | Description                                       | Default value |
 | ------------------------- | ------------------------------------------------- | ------------- |
 | `podman_install_packages` | List of packages to be installed within the role. | `["podman"]`  |
-| `podman_service_state`    | Podman service's state after role execution.      | `started`     |
-| `podman_service_enabled`  | Wheter to enable podman service at boot.          | `true`        |
 
 ## Dependencies
 

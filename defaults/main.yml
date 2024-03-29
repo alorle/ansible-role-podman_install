@@ -1,5 +1,3 @@
 ---
 podman_install_packages:
   - podman
-podman_service_state: started
-podman_service_enabled: true

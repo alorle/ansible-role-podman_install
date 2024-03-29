@@ -7,12 +7,17 @@
   block:
     - name: Define Ubuntu repository base path.
       ansible.builtin.set_fact:
-        repository_base_path: "xUbuntu_{{ ansible_facts.distribution_version }}"
+        repository_base_path: "xUbuntu_22.04"
       when: ansible_facts.distribution == "Ubuntu"
     - name: Define Debian repository base path.
       ansible.builtin.set_fact:
-        repository_base_path: "Debian_{{ ansible_facts.distribution_major_version }}"
+        repository_base_path: "Debian_Testing"
       when: ansible_facts.distribution != "Ubuntu"
+
+- name: Update apt cache.
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
 
 - name: Ensure dependencies are installed.
   ansible.builtin.package:
@@ -33,6 +38,7 @@
     repo: "{{ podman_apt_repository.repo }}"
     mode: "{{ podman_apt_repository.mode | default('0644') }}"
     state: "{{ podman_apt_repository.state | default('present') }}"
+    update_cache: true
 
 - name: Ensure apt packages are installed.
   ansible.builtin.package:
@@ -45,7 +51,7 @@
 - name: Ensure podman is started and enabled at boot.
   ansible.builtin.service:
     name: podman
-    state: "{{ podman_service_state }}"
-    enabled: "{{ podman_service_enabled }}"
+    state: restarted
+    enabled: true
   ignore_errors: "{{ ansible_check_mode }}"
-  when: (result.results | selectattr("changed", "equalto", true) | length) > 0
+  when: not ansible_check_mode and (result.results | selectattr("changed", "equalto", true) | length) > 0

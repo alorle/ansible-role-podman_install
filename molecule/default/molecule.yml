@@ -6,12 +6,8 @@ driver:
 platforms:
   - name: instance-ubuntu2204
     image: geerlingguy/docker-ubuntu2204-ansible:latest
-  - name: instance-ubuntu2004
-    image: geerlingguy/docker-ubuntu2004-ansible:latest
   - name: instance-debian12
     image: geerlingguy/docker-debian12-ansible:latest
-  - name: instance-debian11
-    image: geerlingguy/docker-debian11-ansible:latest
 provisioner:
   name: ansible
 verifier:
